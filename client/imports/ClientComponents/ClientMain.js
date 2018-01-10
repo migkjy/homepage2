@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import Header from './Header';
-import ClientSubmenu from './ClientSubmenu';
-import Appointments from './Appointments';
-import Notfound from './Notfound';
+import Header from '../Header';
+import ClientSubmenu from '../ClientComponents/ClientSubmenu';
+import Appointments from '../ClientComponents/Appointments';
+import Notfound from '../Notfound';
 
 
 class ClientMain extends Component {

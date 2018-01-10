@@ -13,7 +13,7 @@ import AdminMain from './AdminMain';
 import Authenticated from './Authenticated';
 import Landing from './Landing';
 import Notfound from './Notfound';
-import ClientMain from './ClientMain';
+import ClientMain from './ClientComponents/ClientMain';
 
 const App = props => (
   <Router>

@@ -1,6 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Accounts } from 'meteor/accounts-base';
 import { Roles } from 'meteor/alanning:roles';
+import { UserStatus } from 'meteor/mizzao:user-status';
 
 import '../imports/api/users';
 import '../imports/api/StaffCollection';
@@ -13,6 +14,7 @@ Meteor.startup(() => {
   Meteor.publish('allRoles', () => Meteor.roles.find({}));
   Meteor.publish('allClients', () => Roles.getUsersInRole('client'));
   Meteor.publish('getClientsCard', username => Meteor.users.find({ username }));
+  // Meteor.publish('UserStatus', () => UserStatus.connections.find());
 
   if (Meteor.users.find().count() === 0) {
     const cResult = Accounts.createUser({

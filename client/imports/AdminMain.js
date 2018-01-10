@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
+import { UserStatus } from 'meteor/mizzao:user-status';
 import $ from 'jquery';
 
 import Header from './Header';
@@ -15,6 +16,12 @@ import Clients from './Clients';
 
 export default class AdminMain extends Component {
   componentDidMount() {
+    UserStatus.startMonitor({
+      threshold: 30000,
+      idleOnBlur: true,
+    });
+    console.log(UserStatus);
+
     $.fn.extend({
       animateCss(animationName, callback) {
         const animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
@@ -27,6 +34,9 @@ export default class AdminMain extends Component {
         return this;
       },
     });
+  }
+  componentWillUnmount() {
+    UserStatus.stopMonitor();
   }
   render() {
     return (

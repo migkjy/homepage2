@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
+import { UserStatus } from 'meteor/mizzao:user-status';
 
 import UsersCreate from './UsersCreate';
 
@@ -19,17 +20,30 @@ class Users extends Component {
   }
   renderUsersTable() {
     const users = this.props.users;
-    return users.map((user, index) => (
-      <tr key={user._id}>
-        <th scope="row">{index + 1}</th>
-        <td>{user.profile.first_name}</td>
-        <td>{user.profile.last_name}</td>
-        <td>{user.roles.map((role, index) => {
-          <span key={index}><span className="badge badge-info">{role}</span>&nbsp;</span>;
-        })}
-        </td>
-      </tr>
-    ));
+    return users.map((user, index) => {
+      const status = '';
+      if (user.status.online) {
+        if (user.status.idle) {
+          status = (<span className="badge badge-warning">Idle</span>);
+        } else {
+          status = (<span className="badge badge-success">Online</span>);
+        }
+      } else {
+        status = (<span className="badge badge-secondary">Offline</span>);
+      }
+      return (
+        <tr key={user._id}>
+          <th scope="row">{index + 1}</th>
+          <td>{user.profile.first_name}</td>
+          <td>{user.profile.last_name}</td>
+          <td>{user.roles.map((role, index) => {
+            <span key={index}><span className="badge badge-info">{role}</span>&nbsp;</span>;
+          })}
+          </td>
+          <td>{status}</td>
+        </tr>
+      );
+    });
   }
   renderCreateUsersArea() {
     if (!this.state.isCreatingUsers) {
@@ -65,6 +79,7 @@ class Users extends Component {
                 <th scope="col">First Name</th>
                 <th scope="col">Last Name</th>
                 <th scope="col">Role</th>
+                <th scope="col">Status</th>
               </tr>
             </thead>
             <tbody>
@@ -86,7 +101,9 @@ class Users extends Component {
 export default withTracker((props) => {
   const usersSubscription = Meteor.subscribe('allUsers');
   const rolesSubscription = Meteor.subscribe('allRoles');
+  // const statusSubscription = Meteor.subscribe('UserStatus');
   const allReady = usersSubscription.ready() && rolesSubscription.ready();
+  // && statusSubscription.ready();
   const loading = usersSubscription ? !allReady : true;
   return {
     loading,

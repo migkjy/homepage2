@@ -11,13 +11,22 @@ const Authenticated = ({
     {...rest}
     path={path}
     render={(props) => {
+      const isAdmin = Roles.userIsInRole(Meteor.userId(), 'admin');
       if (loggingIn) { return <div />; }
 
       if (!authenticated) { return <Redirect to="/login" />; }
 
-      return (React.createElement(component, {
-        ...props, ...rest, user, path, loggingIn, authenticated,
-      }));
+      if (adminOnly && isAdmin) {
+        return (React.createElement(component, {
+          ...props, ...rest, user, path, loggingIn, authenticated,
+        }));
+      }
+      if (!adminOnly) {
+        return (React.createElement(component, {
+          ...props, ...rest, user, path, loggingIn, authenticated,
+        }));
+      }
+      return <Redirect to="/login" />;
     }}
   />
 );

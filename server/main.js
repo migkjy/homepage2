@@ -14,7 +14,7 @@ Meteor.startup(() => {
   Meteor.publish('allRoles', () => Meteor.roles.find({}));
   Meteor.publish('allClients', () => Roles.getUsersInRole('client'));
   Meteor.publish('getClientsCard', username => Meteor.users.find({ username }));
-  // Meteor.publish('UserStatus', () => UserStatus.connections.find());
+  Meteor.publish('UserStatus', () => UserStatus.connections.find());
 
   if (Meteor.users.find().count() === 0) {
     const cResult = Accounts.createUser({

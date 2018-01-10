@@ -92,7 +92,7 @@ class Staff extends Component {
 
 export default withTracker((props) => {
   const staffSubscription = Meteor.subscribe('StaffCollection');
-  const deptSubscription = Meteor.subscribe('ClientsCardCollection');
+  const deptSubscription = Meteor.subscribe('DepartmentsCollection');
   const posSubscription = Meteor.subscribe('PositionsCollection');
   const allReady = staffSubscription.ready() && deptSubscription.ready() && posSubscription.ready();
   const loading = staffSubscription ? !allReady : true;

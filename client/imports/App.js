@@ -13,6 +13,7 @@ import AdminMain from './AdminMain';
 import Authenticated from './Authenticated';
 import Landing from './Landing';
 import Notfound from './Notfound';
+import ClientMain from './ClientMain';
 
 const App = props => (
   <Router>
@@ -21,7 +22,8 @@ const App = props => (
       {/* if not use exact, every path goes to /(root)  */}
       <Route exact path="/" component={Landing} />
       <Route exact path="/login" component={Login} />
-      <Authenticated path="/admin" component={AdminMain} {...props} />
+      <Authenticated path="/admin" component={AdminMain} adminOnly {...props} />
+      <Authenticated path="/client" component={ClientMain} adminOnly={false} {...props} />
       <Route component={Notfound} />
     </Switch>
   </Router>

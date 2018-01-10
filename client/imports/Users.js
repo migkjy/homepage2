@@ -36,9 +36,9 @@ class Users extends Component {
           <th scope="row">{index + 1}</th>
           <td>{user.profile.first_name}</td>
           <td>{user.profile.last_name}</td>
-          <td>{user.roles.map((role, index) => {
-            <span key={index}><span className="badge badge-info">{role}</span>&nbsp;</span>;
-          })}
+          <td>{user.roles.map((role, index) => (
+            <span key={index}><span className="badge badge-info">{role}</span>&nbsp;</span>
+          ))}
           </td>
           <td>{status}</td>
         </tr>
@@ -101,9 +101,9 @@ class Users extends Component {
 export default withTracker((props) => {
   const usersSubscription = Meteor.subscribe('allUsers');
   const rolesSubscription = Meteor.subscribe('allRoles');
-  // const statusSubscription = Meteor.subscribe('UserStatus');
-  const allReady = usersSubscription.ready() && rolesSubscription.ready();
-  // && statusSubscription.ready();
+  const statusSubscription = Meteor.subscribe('UserStatus');
+  // statusSubscription.ready() also needed. because it takes some time to activate
+  const allReady = usersSubscription.ready() && rolesSubscription.ready() && statusSubscription.ready();
   const loading = usersSubscription ? !allReady : true;
   return {
     loading,

@@ -20,7 +20,6 @@ export default class AdminMain extends Component {
       threshold: 30000,
       idleOnBlur: true,
     });
-    console.log(UserStatus);
 
     $.fn.extend({
       animateCss(animationName, callback) {

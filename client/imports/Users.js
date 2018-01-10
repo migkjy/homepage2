@@ -19,9 +19,15 @@ class Users extends Component {
     this.setState({ isCreatingUsers: toggle });
   }
   renderUsersTable() {
+    if (this.props.loading) {
+      <tr />;
+    }
     const users = this.props.users;
     return users.map((user, index) => {
       const status = '';
+      if (!user.status) {
+        return (<tr key={index} />);
+      }
       if (user.status.online) {
         if (user.status.idle) {
           status = (<span className="badge badge-warning">Idle</span>);

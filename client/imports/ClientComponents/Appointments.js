@@ -19,36 +19,63 @@ class Appointments extends Component {
     this.state = {
       creatingAppointment: true,
       appointmentDate: moment(),
-      events: [],
+      eventsInitialized: false,
+      events: this.props.appointments,
+      localStartTimes: [],
       hasCustomEvents: false,
+      reasonForVisit: '',
+      startDate: new Date(2017, 16, 11, 9, 0, 0),
+      endDate: new Date(2017, 16, 11, 20, 0, 0),
+      timeText: '',
     };
   }
-  componentWillMount() {
-    const localEvents = this.state.events;
-    localEvents.push({
-      title: 'Booked',
-      start: new Date(2017, 10, 15, 9, 0, 0),
-      end: new Date(2017, 10, 15, 10, 0, 0),
-    });
-    localEvents.push({
-      title: 'Doctor Talgat',
-      start: new Date(2017, 10, 15, 15, 0, 0),
-      end: new Date(2017, 10, 15, 16, 0, 0),
-      desc: 'Check up',
-    });
-    this.setState({ events: localEvents });
+
+  componentWillUpdate() {
+    if (!this.state.eventsInitialized) {
+      const events = this.props.appointments;
+      const localStartTimes = [];
+
+      events.map((event, index) => {
+        localStartTimes.push(moment(event.start).format('DD.MM.YYYY hh:mm'));
+      });
+      this.setState({ events, eventsInitialized: true, localStartTimes });
+    }
   }
+
   handleDateChange(newDate) {
+    let eventTime = `from ${this.state.appointmentDate.format('HH:mm')}`;
+    const timeRef = this.state.appointmentDate;
+    eventTime += ` to ${timeRef.add(1, 'hours').format('HH:mm')}`;
+    this.setState({ timeText: eventTime });
     this.setState({
       appointmentDate: newDate,
     });
   }
+
   pushEvent(slotInfo) {
+    const clickedEvent = moment(slotInfo.start).format('DD.MM.YYYY hh:mm');
+    const localStartTimes = this.state.localStartTimes;
+    const result = localStartTimes.indexOf(clickedEvent);
+    if (result != -1) {
+      Bert.alert({
+        title: 'This time is taken',
+        message: 'Sorry, that timeslot is booked!',
+        type: 'info',
+        style: 'growl-top-right',
+        icon: 'fa-clock-o',
+      });
+      return true;
+    }
     const event = {};
     event.title = 'My booking';
     event.start = slotInfo.start;
     event.end = slotInfo.end;
+    this.setState({ appointmentDate: moment(slotInfo.start) });
     const localEvents = this.state.events;
+    let eventTime = `from ${this.state.appointmentDate.format('HH:mm')}`;
+    const timeRef = this.state.appointmentDate;
+    eventTime += ` to ${timeRef.add(1, 'hours').format('HH:mm')}`;
+    this.setState({ timeText: eventTime });
     if (this.state.hasCustomEvents) {
       localEvents.pop();
     } else {
@@ -57,11 +84,72 @@ class Appointments extends Component {
     localEvents.push(event);
     this.setState({ events: localEvents });
   }
+
+  eventPropGetter(event, start, end, isSelected) {
+    let classForEvent = '';
+    const styleForEvent = {};
+    if (event.isBooked) {
+      classForEvent += ' booked';
+      styleForEvent.backgroundColor = '#c91f37';
+    } else
+    if (event.approved == false) {
+      styleForEvent.backgroundColor = '#e67e22';
+    } else {
+      styleForEvent.backgroundColor = '#f39c12';
+    }
+
+    if (event.authorId === this.props.user._id) {
+      styleForEvent.border = '2px dotted #2ecc71';
+      // styleForEvent.borderRadius = 5
+    }
+
+    const response = {
+      className: classForEvent,
+      style: styleForEvent,
+    };
+    return response;
+  }
+
+  bookedTimeslotClick(e) {
+    Bert.alert({
+      title: 'This time is taken',
+      message: 'Sorry, that timeslot is booked!',
+      type: 'info',
+      style: 'growl-top-right',
+      icon: 'fa-clock-o',
+    });
+  }
+
+  handleAppointmentSubmit(e) {
+    e.preventDefault();
+    // console.log('Reason for visit: '+this.state.reasonForVisit);
+    const appDate = this.state.appointmentDate;
+    // console.log(moment(appDate).subtract({hours: 1}).format('DD.MM.YYYY hh:mm'))
+    const newBookingEvent = {};
+    newBookingEvent.title = 'Requested';
+    newBookingEvent.start = moment(appDate).subtract({ hours: 1 }).toDate();
+    newBookingEvent.end = moment(appDate).toDate();
+    newBookingEvent.isBooked = false;
+    newBookingEvent.reasonForVisit = this.state.reasonForVisit;
+    newBookingEvent.authorId = this.props.user._id;
+    Meteor.call('appointment.insert', newBookingEvent, (error) => {
+      if (error) {
+        console.log(error.reason);
+      } else {
+        Bert.alert({
+          title: 'Booking request sent!',
+          message: 'Your request has been sent to registrar!',
+          type: 'success',
+          style: 'growl-top-right',
+          icon: 'fa-clock-o',
+        });
+      }
+    });
+    this.setState({ creatingAppointment: false, eventsInitialized: false });
+  }
+
   renderCreateAppointmentArea() {
     if (this.state.creatingAppointment) {
-      const startDate = new Date(2017, 10, 11, 9, 0, 0);
-      const endDate = new Date(2017, 10, 11, 20, 0, 0);
-
       return (
         <div className="col">
           <div className="card">
@@ -70,18 +158,34 @@ class Appointments extends Component {
             </div>
             <div className="card-body">
               <h4 className="card-title">Please fill out this form</h4>
-              <form>
+              <form onSubmit={this.handleAppointmentSubmit.bind(this)}>
                 <div className="row">
                   <div className="col-xs-12 col-md-3">
                     <div className="form-group">
                       <label>Reason for visit:</label>
-                      <textarea type="text" className="form-control" />
+                      <textarea
+                        type="text"
+                        value={this.state.reasonForVisit}
+                        onChange={(e) => {
+                          e.preventDefault();
+                          this.setState({ reasonForVisit: e.target.value });
+                        }}
+                        className="form-control"
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label>Desired time (please pick in Calendar):</label>
+                      <input
+                        value={this.state.timeText}
+                        type="text"
+                        className="form-control"
+                        readOnly
+                      />
                     </div>
                     <div className="form-group">
                       <label>Desired date:</label>
                       <DatePicker
                         className="form-control"
-                        fixedHeight
                         selected={this.state.appointmentDate}
                         dateFormat="DD MMM YYYY"
                         onChange={this.handleDateChange.bind(this)}
@@ -97,8 +201,8 @@ class Appointments extends Component {
                       <label>Desired appointment date:</label>
                       <BigCalendar
                         events={this.state.events}
-                        min={startDate}
-                        max={endDate}
+                        min={this.state.startDate}
+                        max={this.state.endDate}
                         startAccessor="start"
                         defaultView="week"
                         views={['week']}
@@ -106,18 +210,10 @@ class Appointments extends Component {
                         step={60}
                         date={this.state.appointmentDate.toDate()}
                         onNavigate={() => { console.log('somehow navigated'); }}
-
+                        eventPropGetter={this.eventPropGetter.bind(this)}
                         toolbar={false}
                         selectable
-                        onSelectEvent={(event) => {
-                          Bert.alert({
-                            title: 'This time is taken',
-                            message: 'Sorry, that timeslot is booked!',
-                            type: 'info',
-                            style: 'growl-top-right',
-                            icon: 'fa-clock-o',
-                          });
-                        }}
+                        onSelectEvent={this.bookedTimeslotClick.bind(this)}
                         onSelectSlot={this.pushEvent.bind(this)}
                         timeslots={1}
                         defaultView="week"
@@ -129,7 +225,14 @@ class Appointments extends Component {
 
                 <div className="btn-group">
                   <button type="submit" className="btn btn-primary">Request booking</button>
-                  <button className="btn btn-secondary" onClick={e => (this.setState({ creatingAppointment: false }))}>Cancel</button>
+                  <button
+                    className="btn btn-secondary"
+                    onClick={e => (this.setState({
+                      creatingAppointment: false,
+                      eventsInitialized: false,
+                    }))}
+                  >Cancel
+                  </button>
                 </div>
               </form>
             </div>
@@ -139,11 +242,23 @@ class Appointments extends Component {
     }
     return (
       <div className="col-md-6">
-        <button className="btn btn-success" onClick={e => (this.setState({ creatingAppointment: true }))}>Request New Appointment</button>
+        <button
+          className="btn btn-success"
+          onClick={e => (this.setState({
+            creatingAppointment: true,
+          }))}
+        >Request New Appointment
+        </button>
       </div>
     );
   }
+
   render() {
+    if (this.props.loading) {
+      return (
+        <div><h1>Loading</h1></div>
+      );
+    }
     return (
       <div className="row">
         {this.renderCreateAppointmentArea()}
@@ -162,6 +277,7 @@ export default withTracker((props) => {
 
   return {
     loading,
+    user,
     appointments: AppointmentsCollection.find().fetch(),
   };
 })(Appointments);

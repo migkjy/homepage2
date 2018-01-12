@@ -6,15 +6,18 @@ export default [
     end: new Date(2015, 3, 1),
   },
   {
-    title: 'Long Event',
-    start: new Date(2015, 3, 7),
-    end: new Date(2015, 3, 10),
+    title: 'Booked',
+    start: new Date(2017, 10, 15, 9, 0, 0),
+    isBooked: true,
+    end: new Date(2017, 10, 15, 11, 0, 0),
   },
 
   {
-    title: 'DTS STARTS',
-    start: new Date(2016, 2, 13, 0, 0, 0),
-    end: new Date(2016, 2, 20, 0, 0, 0),
+    title: 'Doctor Talgat',
+    start: new Date(2017, 10, 15, 15, 0, 0),
+    end: new Date(2017, 10, 15, 17, 0, 0),
+    isBooked: true,
+    desc: 'Check up',
   },
 
   {

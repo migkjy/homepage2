@@ -22,8 +22,10 @@ if (Meteor.isServer) {
     'appointment.insert': function (newAppointment) {
       newAppointment.createdAt = new Date();
       newAppointment.createdBy = Meteor.userId();
-      newAppointment.counter = 0;
+      // active = not deleted
       newAppointment.active = true;
+      // approved by registrar
+      newAppointment.approved = false;
       return AppointmentsCollection.insert(newAppointment);
     },
     'appointment.delete': function (appointmentId) {

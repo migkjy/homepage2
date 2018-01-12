@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 
-class componentName extends Component {
+class Landing extends Component {
   render() {
     return (
       <Redirect to="/login" />
@@ -9,4 +9,4 @@ class componentName extends Component {
   }
 }
 
-export default componentName;
+export default Landing;

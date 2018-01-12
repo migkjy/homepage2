@@ -9,7 +9,6 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import 'react-datepicker/dist/react-datepicker.css';
 
 import { AppointmentsCollection } from '../../../imports/api/AppointmentsCollection';
-import events from '../component/events';
 
 BigCalendar.momentLocalizer(moment);
 

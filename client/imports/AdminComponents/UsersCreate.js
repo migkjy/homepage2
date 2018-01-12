@@ -4,7 +4,6 @@ import { Meteor } from 'meteor/meteor';
 import $ from 'jquery';
 import { Bert } from 'meteor/themeteorchef:bert';
 
-
 import 'react-select/dist/react-select.css';
 
 class UsersCreate extends Component {

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 
-import Loading from './component/Loading';
+import Loading from './../component/Loading';
 
 class SingleClient extends Component {
   constructor(props) {

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Meteor } from 'meteor/meteor';
 import { Bert } from 'meteor/themeteorchef:bert';
 
-import Checkbox from './Checkbox';
+import Checkbox from './../Checkbox';
 
 class PositionsCreate extends Component {
   constructor(props) {

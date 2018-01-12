@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 
-import { StaffCollection } from '../../imports/api/StaffCollection';
-import { DepartmentsCollection } from '../../imports/api/DepartmentsCollection';
-import { PositionsCollection } from '../../imports/api/PositionsCollection';
+import { StaffCollection } from '../../../imports/api/StaffCollection';
+import { DepartmentsCollection } from '../../../imports/api/DepartmentsCollection';
+import { PositionsCollection } from '../../../imports/api/PositionsCollection';
 
 import StaffCreate from './StaffCreate';
 

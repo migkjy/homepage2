@@ -3,10 +3,10 @@ import { Route, Switch } from 'react-router-dom';
 import { UserStatus } from 'meteor/mizzao:user-status';
 import $ from 'jquery';
 
-import Header from './Header';
+import Header from '../Header';
 import Sidebar from './Sidebar';
 import Dashboard from './Dashboard';
-import Notfound from './Notfound';
+import Notfound from '../Notfound';
 import Staff from './Staff';
 import Departments from './Departments';
 import Positions from './Positions';

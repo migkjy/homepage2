@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 
 
-const ClientSubmenu = (props) => 
+const ClientSubmenu = props =>
 //   const cardPath = `/client/${props.user.username}`;
-   (
+  (
     <div style={{ paddingTop: '15px', marginBottom: '15px' }}>
       <ul className="nav nav-pills nav-fill">
         <li className="nav-item">
@@ -21,8 +21,5 @@ const ClientSubmenu = (props) =>
         </li>
       </ul>
     </div>
-  )
-;
-
-
+  );
 export default ClientSubmenu;

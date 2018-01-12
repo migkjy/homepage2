@@ -3,55 +3,55 @@ import { Link } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 
-import { PositionsCollection } from './../../imports/api/PositionsCollection';
+import { DepartmentsCollection } from './../../../imports/api/DepartmentsCollection';
 
-import PositionsCreate from './PositionsCreate';
+import DepartmentsCreate from './DepartmentsCreate';
 
-class Positions extends Component {
+class Departments extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isCreatingPositions: false,
+      isCreatingDepartments: false,
     };
     this.toggleCreateState = this.toggleCreateState.bind(this);
   }
   toggleCreateState() {
-    const toggle = !this.state.isCreatingPositions;
-    this.setState({ isCreatingPositions: toggle });
+    const toggle = !this.state.isCreatingDepartments;
+    this.setState({ isCreatingDepartments: toggle });
   }
-  renderPositionsTable() {
-    const positions = this.props.positions;
-    return positions.map((pos, index) => (
-      <tr key={pos._id}>
+  renderDepartmentsTable() {
+    const departments = this.props.departments;
+    return departments.map((dept, index) => (
+      <tr key={dept._id}>
         <th scope="row">{index + 1}</th>
-        <td>{pos.name}</td>
-        <td>{pos.counter}</td>
+        <td>{dept.name}</td>
+        <td>{dept.counter}</td>
       </tr>
     ));
   }
-  renderCreatePositionsArea() {
-    if (!this.state.isCreatingPositions) {
+  renderCreateDepartmentsArea() {
+    if (!this.state.isCreatingDepartments) {
       return (
         <button
           className="btn btn-primary"
           onClick={(e) => {
             e.preventDefault();
-            this.setState({ isCreatingPositions: true });
+            this.setState({ isCreatingDepartments: true });
           }}
-        >Add position <i className="fa fa-plus" />
+        >Add department <i className="fa fa-plus" />
         </button>
       );
     }
-    return <PositionsCreate handler={this.toggleCreateState} />;
+    return <DepartmentsCreate handler={this.toggleCreateState} />;
   }
   render() {
     return (
       <div role="main" className="col-sm-9 ml-sm-auto col-md-10 pt-3">
-        <h1>Positions</h1>
+        <h1>Departments</h1>
         <nav aria-label="breadcrumb" role="navigation">
           <ol className="breadcrumb">
             <li className="breadcrumb-item"><Link to="/admin">Dashboard</Link></li>
-            <li className="breadcrumb-item active" aria-current="page">Positions</li>
+            <li className="breadcrumb-item active" aria-current="page">Departments</li>
             <li className="breadcrumb-item" aria-current="page">Staff</li>
           </ol>
         </nav>
@@ -64,20 +64,20 @@ class Positions extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.renderPositionsTable()}
+            {this.renderDepartmentsTable()}
           </tbody>
         </table>
-        {this.renderCreatePositionsArea()}
+        {this.renderCreateDepartmentsArea()}
       </div>
     );
   }
 }
 
 export default withTracker((props) => {
-  const positionsSubscription = Meteor.subscribe('PositionsCollection');
-  const loading = positionsSubscription ? !positionsSubscription.ready() : true;
+  const departmentsSubscription = Meteor.subscribe('DepartmentsCollection');
+  const loading = departmentsSubscription ? !departmentsSubscription.ready() : true;
   return {
     loading,
-    positions: PositionsCollection.find().fetch(),
+    departments: DepartmentsCollection.find().fetch(),
   };
-})(Positions);
+})(Departments);

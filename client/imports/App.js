@@ -9,7 +9,7 @@ import Blaze from 'meteor/gadicc:blaze-react-component';
 // import Alert from 'react-s-alert';
 
 import Login from './Login';
-import AdminMain from './AdminMain';
+import AdminMain from './AdminComponents/AdminMain';
 import Authenticated from './Authenticated';
 import Landing from './Landing';
 import Notfound from './Notfound';

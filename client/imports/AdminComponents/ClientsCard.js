@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor';
 import { withTracker } from 'meteor/react-meteor-data';
 
-import { ClientsCardCollection } from '../../imports/api/ClientsCardCollection';
+import { ClientsCardCollection } from '../../../imports/api/ClientsCardCollection';
 
 class ClientsCard extends Component {
   renderClientsCardTable() {

@@ -32,7 +32,12 @@ class Login extends Component {
           style: 'growl-top-right',
           icon: 'fa-user',
         });
-        history.push('/admin');
+        // the 'admin' index should be up 0
+        if (Meteor.user().roles.indexOf('admin') > -1) {
+          history.push('/admin');
+        } else {
+          history.push('/client');
+        }
       }
     });
   }

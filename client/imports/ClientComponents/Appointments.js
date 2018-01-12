@@ -10,13 +10,15 @@ import 'react-datepicker/dist/react-datepicker.css';
 
 import { AppointmentsCollection } from '../../../imports/api/AppointmentsCollection';
 
+import MyAppointmentRequests from './MyAppointmentRequests';
+
 BigCalendar.momentLocalizer(moment);
 
 class Appointments extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      creatingAppointment: true,
+      creatingAppointment: false,
       appointmentDate: moment(),
       eventsInitialized: false,
       events: this.props.appointments,
@@ -144,112 +146,122 @@ class Appointments extends Component {
         });
       }
     });
-    this.setState({ creatingAppointment: false, eventsInitialized: false });
+    this.setState({ creatingAppointment: false, eventsInitialized: false, hasCustomEvents: false });
   }
 
   renderCreateAppointmentArea() {
     if (this.state.creatingAppointment) {
       return (
-        <div className="col">
-          <div className="card">
-            <div className="card-header">
-              Book Appointment
-            </div>
-            <div className="card-body">
-              <h4 className="card-title">Please fill out this form</h4>
-              <form onSubmit={this.handleAppointmentSubmit.bind(this)}>
-                <div className="row">
-                  <div className="col-xs-12 col-md-3">
-                    <div className="form-group">
-                      <label>Reason for visit:</label>
-                      <textarea
-                        type="text"
-                        value={this.state.reasonForVisit}
-                        onChange={(e) => {
-                          e.preventDefault();
-                          this.setState({ reasonForVisit: e.target.value });
-                        }}
-                        className="form-control"
-                      />
+        <div className="row">
+          <div className="col">
+            <div className="card">
+              <div className="card-header">
+                Book Appointment
+              </div>
+              <div className="card-body">
+                <h4 className="card-title">Please fill out this form</h4>
+                <form onSubmit={this.handleAppointmentSubmit.bind(this)}>
+                  <div className="row">
+                    <div className="col-xs-12 col-md-3">
+                      <div className="form-group">
+                        <label>Reason for visit:</label>
+                        <textarea
+                          type="text"
+                          value={this.state.reasonForVisit}
+                          onChange={(e) => {
+                            e.preventDefault();
+                            this.setState({ reasonForVisit: e.target.value });
+                          }}
+                          className="form-control"
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label>Desired time (please pick in Calendar):</label>
+                        <input
+                          value={this.state.timeText}
+                          type="text"
+                          className="form-control"
+                          readOnly
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label>Desired date:</label>
+                        <DatePicker
+                          className="form-control"
+                          selected={this.state.appointmentDate}
+                          dateFormat="DD MMM YYYY"
+                          onChange={this.handleDateChange.bind(this)}
+                        />
+                      </div>
+                      <div className="form-group">
+                        <label>Patient phone #:</label>
+                        <input type="phone" className="form-control" value="700 177 0777" readOnly />
+                      </div>
                     </div>
-                    <div className="form-group">
-                      <label>Desired time (please pick in Calendar):</label>
-                      <input
-                        value={this.state.timeText}
-                        type="text"
-                        className="form-control"
-                        readOnly
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label>Desired date:</label>
-                      <DatePicker
-                        className="form-control"
-                        selected={this.state.appointmentDate}
-                        dateFormat="DD MMM YYYY"
-                        onChange={this.handleDateChange.bind(this)}
-                      />
-                    </div>
-                    <div className="form-group">
-                      <label>Patient phone #:</label>
-                      <input type="phone" className="form-control" value="700 177 0777" readOnly />
+                    <div className="col-xs-12 col-md-9">
+                      <div className="form-group">
+                        <label>Desired appointment date:</label>
+                        <BigCalendar
+                          events={this.state.events}
+                          min={this.state.startDate}
+                          max={this.state.endDate}
+                          startAccessor="start"
+                          defaultView="week"
+                          views={['week']}
+                          endAccessor="end"
+                          step={60}
+                          date={this.state.appointmentDate.toDate()}
+                          onNavigate={() => { console.log('somehow navigated to calendar'); }}
+                          eventPropGetter={this.eventPropGetter.bind(this)}
+                          toolbar={false}
+                          selectable
+                          onSelectEvent={this.bookedTimeslotClick.bind(this)}
+                          onSelectSlot={this.pushEvent.bind(this)}
+                          timeslots={1}
+                          defaultView="week"
+                        />
+                      </div>
                     </div>
                   </div>
-                  <div className="col-xs-12 col-md-9">
-                    <div className="form-group">
-                      <label>Desired appointment date:</label>
-                      <BigCalendar
-                        events={this.state.events}
-                        min={this.state.startDate}
-                        max={this.state.endDate}
-                        startAccessor="start"
-                        defaultView="week"
-                        views={['week']}
-                        endAccessor="end"
-                        step={60}
-                        date={this.state.appointmentDate.toDate()}
-                        onNavigate={() => { console.log('somehow navigated'); }}
-                        eventPropGetter={this.eventPropGetter.bind(this)}
-                        toolbar={false}
-                        selectable
-                        onSelectEvent={this.bookedTimeslotClick.bind(this)}
-                        onSelectSlot={this.pushEvent.bind(this)}
-                        timeslots={1}
-                        defaultView="week"
-                      />
-                    </div>
+
+
+                  <div className="btn-group">
+                    <button type="submit" className="btn btn-primary">Request booking</button>
+                    <button
+                      className="btn btn-secondary"
+                      onClick={e => (this.setState({
+                        creatingAppointment: false,
+                        eventsInitialized: false,
+                      }))}
+                    >Cancel
+                    </button>
                   </div>
-                </div>
-
-
-                <div className="btn-group">
-                  <button type="submit" className="btn btn-primary">Request booking</button>
-                  <button
-                    className="btn btn-secondary"
-                    onClick={e => (this.setState({
-                      creatingAppointment: false,
-                      eventsInitialized: false,
-                    }))}
-                  >Cancel
-                  </button>
-                </div>
-              </form>
+                </form>
+              </div>
             </div>
           </div>
         </div>
       );
     }
     return (
-      <div className="col-md-6">
-        <button
-          className="btn btn-success"
-          onClick={e => (this.setState({
-            creatingAppointment: true,
-          }))}
-        >Request New Appointment
-        </button>
+      <div className="row">
+        <div className="col-md-6">
+          <button
+            className="btn btn-success"
+            onClick={e => (this.setState({
+              creatingAppointment: true,
+            }))}
+          >Request New Appointment
+          </button>
+        </div>
       </div>
     );
+  }
+
+  renderMyAppointments() {
+    if (!this.state.creatingAppointment) {
+      return <MyAppointmentRequests myAppointments={this.props.myAppointments} />;
+    }
   }
 
   render() {
@@ -259,9 +271,9 @@ class Appointments extends Component {
       );
     }
     return (
-      <div className="row">
+      <div>
         {this.renderCreateAppointmentArea()}
-
+        {this.renderMyAppointments()}
       </div>
     );
   }
@@ -271,12 +283,14 @@ export default withTracker((props) => {
   const loggingIn = Meteor.loggingIn();
   const user = Meteor.user();
   const appointmentsSubscription = Meteor.subscribe('AppointmentsCollection');
-  const allReady = appointmentsSubscription.ready() && !loggingIn && user;
+  const myAppointments = Meteor.subscribe('MyAppointments');
+  const allReady = appointmentsSubscription.ready() && !loggingIn && user && myAppointments.ready();
   const loading = allReady ? !allReady : true;
 
   return {
     loading,
     user,
+    myAppointments: AppointmentsCollection.find({ authorId: user._id }).fetch(),
     appointments: AppointmentsCollection.find().fetch(),
   };
 })(Appointments);

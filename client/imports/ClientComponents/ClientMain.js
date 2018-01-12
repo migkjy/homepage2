@@ -5,6 +5,7 @@ import { UserStatus } from 'meteor/mizzao:user-status';
 import Header from '../Header';
 import ClientSubmenu from '../ClientComponents/ClientSubmenu';
 import Appointments from '../ClientComponents/Appointments';
+import Notifications from '../ClientComponents/Notifications';
 import Notfound from '../Notfound';
 
 
@@ -26,6 +27,7 @@ class ClientMain extends Component {
           <ClientSubmenu {...this.props} />
           <Switch>
             <Route exact path="/client" component={Appointments} />
+            <Route exact path="/client/notifications" component={Notifications} />
             <Route component={Notfound} />
           </Switch>
         </div>

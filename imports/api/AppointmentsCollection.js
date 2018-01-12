@@ -5,6 +5,7 @@ export const AppointmentsCollection = new Mongo.Collection('AppointmentsCollecti
 
 if (Meteor.isServer) {
   Meteor.publish('AppointmentsCollection', () => AppointmentsCollection.find());
+  Meteor.publish('MyAppointments', () => AppointmentsCollection.find({ authorId: Meteor.userId() }));
 
   AppointmentsCollection.allow({
     insert() { return false; },

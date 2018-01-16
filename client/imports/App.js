@@ -14,13 +14,14 @@ import Authenticated from './Authenticated';
 import Landing from './Landing';
 import Notfound from './Notfound';
 import ClientMain from './ClientComponents/ClientMain';
+import Index from './Index';
 
 const App = props => (
   <Router>
     <Switch>
       {/* AdminMain needs blacket */}
       {/* if not use exact, every path goes to /(root)  */}
-      <Route exact path="/" component={Landing} />
+      <Route exact path="/" component={Index} />
       <Route exact path="/login" component={Login} />
       <Authenticated path="/admin" component={AdminMain} adminOnly {...props} />
       <Authenticated path="/client" component={ClientMain} adminOnly={false} {...props} />

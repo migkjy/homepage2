@@ -1,4 +1,6 @@
 import { Meteor } from 'meteor/meteor';
+import { Tracker } from 'meteor/tracker';
+import $ from 'jquery';
 
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
@@ -11,4 +13,3 @@ Meteor.startup(() => {
     document.getElementById('render-target'),
   );
 });
-

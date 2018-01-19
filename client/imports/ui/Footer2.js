@@ -13,8 +13,15 @@ const Footer = () => (
           <h2 className="section-heading text-white">현대주택공사</h2>
         </div>
         <div className="col-lg-9 ml-auto text-left">
-          <p className="mb-1 text-white" >주소 : 강원도 강릉시 노암동 xxx 607호</p>
-          <p className="mb-1 text-white" >전화 : 033)641-5632 핸드폰 : 010-5371-1122 팩스 : 033)641-5632</p>
+          <p className="mb-1 text-white" >주소 : 강원도 강릉시 남부로 125번길 23</p>
+          <p className="mb-1 text-white" >
+            <i className="fa fa-phone" aria-hidden="true" />
+            <span> 033)641-5632 &nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <i className="fa fa-mobile" aria-hidden="true" />
+            <span> 010-5371-1122 &nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <i className="fa fa-fax" aria-hidden="true" />
+            <span> 033)641-5632 &nbsp;&nbsp;&nbsp;&nbsp;</span>
+          </p>
           <p className="mb-1 text-white" >종합건설면허등록업체, 주택건설사업자등록업체</p>
           <p className="mb-1 text-white" >홈페이지 : www.hyundaihousing.com</p>
           <p className="mb-1 text-white">

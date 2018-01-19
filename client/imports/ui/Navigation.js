@@ -1,5 +1,6 @@
 import Blaze from 'meteor/gadicc:blaze-react-component';
 import React, { Component } from 'react';
+import $ from 'jquery';
 
 class Navigation extends Component {
   constructor(props) {

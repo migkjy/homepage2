@@ -25,7 +25,7 @@ const Footer = () => (
           <p className="mb-1" >종합건설면허등록업체, 주택건설사업자등록업체</p>
           <p className="mb-1" >홈페이지 : www.hyundaihousing.com</p>
           <p className="mb-1">
-            <a href="mailto:your-email@your-domain.com">feedback@naver.com</a>
+            <a href="mailto:your-email@your-domain.com">father-email@naver.com</a>
           </p>
         </div>
       </div>

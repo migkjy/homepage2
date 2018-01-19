@@ -15,7 +15,7 @@ const ContentSecond = () => (
       <div className="row">
         <div className="col-lg-4 ml-auto text-center">
           <i className="fa fa-phone fa-3x mb-3 sr-contact" />
-          <p>010-4108-2235</p>
+          <p>010-5371-1122</p>
         </div>
         <div className="col-lg-4 mr-auto text-center">
           <i className="fa fa-envelope-o fa-3x mb-3 sr-contact" />

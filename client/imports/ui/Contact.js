@@ -20,7 +20,7 @@ const ContentSecond = () => (
         <div className="col-lg-4 mr-auto text-center">
           <i className="fa fa-envelope-o fa-3x mb-3 sr-contact" />
           <p>
-            <a href="mailto:your-email@your-domain.com">father-email@naver.com</a>
+            <a href="mailto:your-email@your-domain.com">migkjy3@naver.com</a>
           </p>
         </div>
       </div>

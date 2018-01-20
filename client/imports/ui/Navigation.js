@@ -1,6 +1,4 @@
-import Blaze from 'meteor/gadicc:blaze-react-component';
 import React, { Component } from 'react';
-import $ from 'jquery';
 
 class Navigation extends Component {
   constructor(props) {
@@ -24,7 +22,6 @@ class Navigation extends Component {
           <a className="navbar-brand" href="#">
             <strong>현대주택공사</strong>
           </a>
-          <Blaze template="loginButtons" />
           <button onClick={this.toggleClick} className="navbar-toggler" type="button">
             <span className="navbar-toggler-icon" />
           </button>

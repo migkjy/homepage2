@@ -4,7 +4,7 @@ const Footer = () => (
   // <footer className="py-5 bg-dark">
   <footer className="py-5 bg-dark text-white footer">
     <div className="container">
-      <p className="m-0 text-center">COPYRIGHT &copy; HYUNDAI HOUSING CONSTRUCTION. ALL RIGHT RESERVED</p>
+      <p className="m-0 text-center">COPYRIGHT &copy; HYUNDAI HOUSE CONSTRUCTION. ALL RIGHT RESERVED</p>
       <hr className="my-4" />
     </div>
     <div className="container">
@@ -26,10 +26,10 @@ const Footer = () => (
             </p>
           </div>
           <div>
-            <p className="mb-1 inlineP" >주택건설사업자등록업체 </p>
             <p className="mb-1 inlineP" >사업자등록번호: 226-13-70210</p>
+            <p className="mb-1 inlineP" >주택건설사업자등록업체 </p>
           </div>
-          <p className="mb-1 inlineP" >홈페이지 : www.hyundaiconstruction.com</p>
+          <p className="mb-1 inlineP" >홈페이지 : www.hyundaihc.com</p>
           <p className="mb-1">
             <a href="mailto:your-email@your-domain.com">migkjy3@naver.com</a>
           </p>
